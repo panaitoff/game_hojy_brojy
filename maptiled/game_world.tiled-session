@@ -1,0 +1,90 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "all.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "brick.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "grass.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "level.tmx": {
+            "scale": 0.0625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1136,
+                "y": 560
+            }
+        },
+        "map.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1026,
+                "y": 1024
+            }
+        },
+        "map.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tiels_for_map.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tiles.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "tiles_map.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/yurii/OneDrive/Документы/Док-ты Юрия Панаитова/pygame_project/maptiled",
+    "last.imagePath": "C:/Users/yurii/OneDrive/Документы/Док-ты Юрия Панаитова/pygame_project/maptiled",
+    "map.fixedSize": true,
+    "map.height": 32,
+    "map.lastUsedExportFilter": "Все файлы (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": null,
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 32,
+    "openFiles": [
+        "map.tmx",
+        "tiles.tsx",
+        "level.tmx"
+    ],
+    "project": "game_world.tiled-project",
+    "recentFiles": [
+        "level.tmx",
+        "map.tmx",
+        "tiles.tsx",
+        "tiles_map.tsx",
+        "all.tsx",
+        "tiels_for_map.tsx",
+        "grass.tsx",
+        "brick.tsx",
+        "map.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    }
+}
