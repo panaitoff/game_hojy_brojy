@@ -64,15 +64,14 @@
     "map.tileWidth": 64,
     "map.width": 32,
     "openFiles": [
-        "map.tmx",
         "tiles.tsx",
         "level.tmx"
     ],
     "project": "game_world.tiled-project",
     "recentFiles": [
+        "tiles.tsx",
         "level.tmx",
         "map.tmx",
-        "tiles.tsx",
         "tiles_map.tsx",
         "all.tsx",
         "tiels_for_map.tsx",

@@ -116,7 +116,6 @@ def generate_level(level_decor, level_creatures):
                 new_player = Player(x, y)
             elif level_creatures[y][x] in tile_images['weapons']:
                 weapons['sword'] = Sword(x, y)
-                print(weapons)
             elif level_creatures[y][x] in tile_images['enemy']:
                 Enemy(x, y, slime)
     return new_player
@@ -492,9 +491,10 @@ class Player(pygame.sprite.Sprite):
 
     def attack(self, weapon):
         current_time = pygame.time.get_ticks()
+        weapons[f'{weapon}'].attack()
         if current_time - self.attack_time >= weapons[f'{weapon}'].attack_delay:
             weapon_attack.append(weapons[f'{weapon}'])
-            weapons[f'{weapon}'].attack()
+
 
     def get_hp_inf(self):
         return self.health
@@ -509,8 +509,18 @@ class Enemy(pygame.sprite.Sprite):
 
         self.hp = enemy_info['hp']
         self.attack = enemy_info['attack']
+        self.speed = 3
 
-        self.attacking = False
+        self.attack_radius = 100
+        self.move_radius = 200
+
+        self.status = None
+
+        self.can_attack = True
+        self.attack_time = 0
+        self.attack_cooldown = 500
+
+        self.direction = pygame.math.Vector2()
 
     def update(self):
         if len(weapon_attack) > 0:
@@ -519,6 +529,68 @@ class Enemy(pygame.sprite.Sprite):
                 if self.hp <= 0:
                     self.kill()
                 weapon_attack.remove(weapons['sword'])
+
+        if self.get_status() == 'attack':
+            if pygame.sprite.collide_rect(self, player):
+                if self.do_attack():
+                    self.attack_time = pygame.time.get_ticks()
+        elif self.get_status() == 'move':
+            self.direction = self.get_player_distance(player)[1]
+        else:
+            self.direction = pygame.math.Vector2()
+
+        self.rect.x += self.direction.x * self.speed
+        self.collision_check('horizontal')
+        self.rect.y += self.direction.y * self.speed
+        self.collision_check('vertical')
+
+    def do_attack(self):
+        current_time = pygame.time.get_ticks()
+        print(current_time - self.attack_time)
+        if current_time - self.attack_time >= self.attack_cooldown:
+            player.health -= self.attack
+            return True
+        return False
+
+    def get_player_distance(self, obj):
+        vec_enemy = pygame.math.Vector2(self.rect.center)
+        vec_player = pygame.math.Vector2(obj.rect.center)
+
+        distance = (vec_player - vec_enemy).magnitude()
+
+        if distance > 0:
+            direction = (vec_player - vec_enemy).normalize()
+        else:
+            direction = pygame.math.Vector2()
+
+        return distance, direction
+
+    def get_status(self):
+        distance = self.get_player_distance(player)[0]
+
+        if distance <= self.attack_radius:
+            return 'attack'
+        elif distance <= self.move_radius:
+            return 'move'
+        else:
+            return 'No'
+
+    def collision_check(self, direct):
+        if direct == 'horizontal':
+            for sprite in all_collision:
+                if pygame.sprite.collide_rect(self, sprite):
+                    if self.direction.x > 0:
+                        self.rect.right = sprite.rect.left
+                    if self.direction.x < 0:
+                        self.rect.left = sprite.rect.right
+
+        if direct == 'vertical':
+            for sprite in all_collision:
+                if pygame.sprite.collide_rect(self, sprite):
+                    if self.direction.y > 0:
+                        self.rect.bottom = sprite.rect.top
+                    if self.direction.y < 0:
+                        self.rect.top = sprite.rect.bottom
 
 
 class Sword(pygame.sprite.Sprite):
@@ -532,7 +604,7 @@ class Sword(pygame.sprite.Sprite):
 
         botAnim = []
         for anim in SWORD_ATTACK_ANIMATION:
-            botAnim.append((anim, 100))
+            botAnim.append((anim, 300))
         self.boltAnimAttack = pyganim.PygAnimation(botAnim)
         self.boltAnimAttack.play()
 
@@ -603,8 +675,8 @@ def main():
         enemy_group.draw(screen)
 
         player_group.draw(screen)
-        weapon_group.draw(screen)
         health_bar(player.get_hp_inf())
+        weapon_group.draw(screen)
 
         pygame.display.flip()
 
