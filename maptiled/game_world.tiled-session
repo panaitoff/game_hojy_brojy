@@ -24,8 +24,48 @@
             "scale": 0.0625,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2224,
-                "y": 592
+                "x": 1136,
+                "y": -5008
+            }
+        },
+        "level_1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1630.30303030303,
+                "y": 1409.090909090909
+            }
+        },
+        "level_2..tmx": {
+            "scale": 0.16271033653846154,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1665.5364727608494,
+                "y": 1665.5364727608494
+            }
+        },
+        "level_2.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1472.7272727272725,
+                "y": 1736.3636363636363
+            }
+        },
+        "level_3..tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 922,
+                "y": 1240
+            }
+        },
+        "level_3.tmx": {
+            "scale": 0.20145089285714285,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1345.240997229917,
+                "y": 1027.545706371191
             }
         },
         "map.tmx": {
@@ -64,14 +104,15 @@
     "map.tileWidth": 64,
     "map.width": 32,
     "openFiles": [
+        "map.tmx",
         "tiles.tsx",
         "level.tmx"
     ],
     "project": "game_world.tiled-project",
     "recentFiles": [
-        "tiles.tsx",
         "level.tmx",
         "map.tmx",
+        "tiles.tsx",
         "tiles_map.tsx",
         "all.tsx",
         "tiels_for_map.tsx",

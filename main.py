@@ -7,7 +7,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 SIZE = WIDTH, HEIGHT = 1024, 658
-FPS = 60
+FPS = 120
 TILE_SIZE = 64
 SCREEN_COLOR = pygame.Color('black')
 
@@ -57,7 +57,7 @@ collision_tiles_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 weapon_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
-
+floor_sprite = pygame.sprite.Group()
 all_collision = []
 weapons = {}
 weapon_attack = []
@@ -91,6 +91,9 @@ slime = {
 }
 
 
+player = None
+
+
 # Группа инструментархных функций
 def load_level(file):
     with open(file) as csvf:
@@ -100,32 +103,28 @@ def load_level(file):
     return level_map
 
 
-def generate_level(level_decor, level_creatures):
+def generate_level(level_decor, level_creatures, level):
     new_player = None
     for y in range(len(level_decor)):
         for x in range(len(level_decor[y])):
             if level_decor[y][x] in tile_images['collision_block']:
-                brick = Brick(x, y)
+                brick = Brick(x, y, level)
                 all_collision.append(brick)
-            else:
-                OpenMap(x, y)
-
-    for y in range(len(level_creatures)):
-        for x in range(len(level_creatures[y])):
-            if level_creatures[y][x] in tile_images['spawn']:
+            elif level_creatures[y][x] in tile_images['spawn']:
                 new_player = Player(x, y)
             elif level_creatures[y][x] in tile_images['weapons']:
-                weapons['sword'] = Sword(x, y)
+                weapons['sword'] = Sword(x, y, new_player)
             elif level_creatures[y][x] in tile_images['enemy']:
                 Enemy(x, y, slime)
+    Floor()
     return new_player
 
 
 # Группа классов нужных для создания карты
 class OpenMap(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, level):
         super().__init__(tiles_group, all_sprites)
-        self.open_map = pytmx.load_pygame("maptiled/level.tmx")
+        self.open_map = pytmx.load_pygame(f"maptiled/level_{level}.tmx")
         self.image = self.open_map.get_tile_image(x, y, 0)
 
         self.tile_size = self.open_map.tilewidth
@@ -134,10 +133,10 @@ class OpenMap(pygame.sprite.Sprite):
 
 
 class Brick(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, level):
         super().__init__(collision_tiles_group, all_sprites, tiles_group)
 
-        self.open_map = pytmx.load_pygame("maptiled/level.tmx")
+        self.open_map = pytmx.load_pygame(f"maptiled/level_{level}.tmx")
 
         self.image = self.open_map.get_tile_image(x, y, 0)
 
@@ -145,9 +144,19 @@ class Brick(pygame.sprite.Sprite):
         self.rect = self.image.get_rect().move(self.tile_size * x, self.tile_size * y)
 
 
-# Класс меню
+class Floor(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__(floor_sprite)
+        self.image = pygame.image.load('maptiled\ground.png')
+        self.rect = self.image.get_rect().move(0, 0)
+
+
+# Класс, ответственный за отрисовку и функционал кнопок
 class Button:
+    """The class responsible for drawing and functionality of the buttons"""
+
     def __init__(self, x, y, image, scale):
+        """initializer function"""
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
@@ -171,8 +180,12 @@ class Button:
         return action
 
 
+# класс ответственный за отрисовку стартового меню
 class Menu:
+    """the class responsible for drawing the start menu"""
+
     def __init__(self, screen):
+        """initializer function"""
         self.screen = screen
         self.screen_sizes = screen.get_size()
 
@@ -197,7 +210,9 @@ class Menu:
 
         self.run()
 
+    # функция запуска стартового меню
     def run(self):
+        """start menu launch function"""
         run = True
         while run:
             self.screen.fill(self.MENU_COLOR)
@@ -214,12 +229,18 @@ class Menu:
 
             pygame.display.update()
 
+    # функция возвращающая значение переменной выхода
     def get_quit_value(self):
+        """a function that returns the value of an output variable"""
         return self.quit_value
 
 
+# класс ответственный за отрисовку внутриигрового меню
 class IngameMenu:
+    """the class responsible for drawing the in-game menu"""
+
     def __init__(self, screen):
+        """initializer function"""
         self.screen = screen
         self.screen_sizes = screen.get_size()
 
@@ -231,25 +252,21 @@ class IngameMenu:
                                               'continue_btn.png').convert_alpha()
         self.save_btn_img = pygame.image.load(self.BTN_IMG_PTH +
                                               'save_btn.png').convert_alpha()
-        self.settings_btn_img = pygame.image.load(self.BTN_IMG_PTH +
-                                                  'settings_btn.png').convert_alpha()
         self.quit_btn_img = pygame.image.load(self.BTN_IMG_PTH +
                                               'quit_btn.png').convert_alpha()
 
         self.cont_btn = Button(self.screen_sizes[0] / 2 - 128,
                                125, self.cont_btn_img, 2)
-        self.save_btn = Button(self.screen_sizes[0] / 2 - 128,
-                               250, self.save_btn_img, 2)
-        self.settings_btn = Button(self.screen_sizes[0] / 2 - 128,
-                                   375, self.settings_btn_img, 2)
         self.quit_btn = Button(self.screen_sizes[0] / 2 - 128,
-                               500, self.quit_btn_img, 2)
+                               250, self.quit_btn_img, 2)
 
         self.quit_value = False
 
         self.run()
 
+    # функция запуска внутриигрового меню
     def run(self):
+        """in-game menu launch function"""
         run = True
         while run:
             self.screen.fill(self.MENU_COLOR)
@@ -259,71 +276,24 @@ class IngameMenu:
                     run = False
             if self.cont_btn.draw(self.screen):
                 break
-            if self.save_btn.draw(self.screen):
-                pass
-            if self.settings_btn.draw(self.screen):
-                run_menu = True
-                while run_menu:
-                    settings_menu = SettingsMenu(self.screen)
-                    if settings_menu.get_quit_value():
-                        run_menu = False
             if self.quit_btn.draw(self.screen):
                 self.quit_value = True
                 run = False
 
             pygame.display.update()
 
+    # функция возвращающая значение переменной выхода
     def get_quit_value(self):
+        """a function that returns the value of an output variable"""
         return self.quit_value
 
 
-class SettingsMenu:
-    def __init__(self, screen):
-        self.screen = screen
-        self.screen_sizes = screen.get_size()
-
-        self.TEXT_COLOR = (255, 255, 255)
-        self.MENU_COLOR = (50, 50, 50)
-        self.BTN_IMG_PTH = 'graphics/menu_buttons/'
-
-        self.size_btn_img = pygame.image.load(self.BTN_IMG_PTH + 'size_btn.png').convert_alpha()
-        self.volume_btn_img = pygame.image.load(self.BTN_IMG_PTH + 'volume_btn.png').convert_alpha()
-        self.quit_btn_img = pygame.image.load(self.BTN_IMG_PTH + 'quit_btn.png').convert_alpha()
-
-        self.size_btn = Button(self.screen_sizes[0] / 2 - 128,
-                               375, self.size_btn_img, 2)
-        self.volume_btn = Button(self.screen_sizes[0] / 2 - 128,
-                                 250, self.volume_btn_img, 2)
-        self.quit_btn_sett = Button(self.screen_sizes[0] / 2 - 128,
-                                    125, self.quit_btn_img, 2)
-
-        self.quit_value = False
-        self.run()
-
-    def run(self):
-        run = True
-        while run:
-            self.screen.fill(self.MENU_COLOR)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-            if self.size_btn.draw(self.screen):
-                # вставить функцию для изменения размера окна
-                pass
-            if self.volume_btn.draw(self.screen):
-                # вставить функцию для звука
-                pass
-            if self.quit_btn_sett.draw(self.screen):
-                self.quit_value = True
-                return
-            pygame.display.update()
-
-    def get_quit_value(self):
-        return self.quit_value
-
-
+# класс ответственный за меню поражения
 class GameOverMenu:
+    """class responsible for game over menu"""
+
     def __init__(self, screen):
+        """initializer function"""
         self.screen = screen
         self.screen_sizes = screen.get_size()
 
@@ -333,20 +303,19 @@ class GameOverMenu:
                                                        True, self.TEXT_COLOR)
         self.MENU_COLOR = (50, 50, 50)
         self.BTN_IMG_PTH = 'graphics/menu_buttons/'
-
-        self.last_save_img = pygame.image.load(self.BTN_IMG_PTH +
-                                               'last_save_btn.png').convert_alpha()
         self.quit_btn_img = pygame.image.load(self.BTN_IMG_PTH +
                                               'quit_btn.png').convert_alpha()
-
-        self.last_save_btn = Button(self.screen_sizes[0] / 2 - 128, 256, self.last_save_img, 2)
-        self.quit_btn = Button(self.screen_sizes[0] / 2 - 128, 384, self.quit_btn_img, 2)
+        self.quit_btn = Button(self.screen_sizes[0] / 2 - 128,
+                               self.screen_sizes[1] / 1.5,
+                               self.quit_btn_img, 2)
 
         self.quit_value = False
 
         self.run()
 
+    # функция запуска меню поражения
     def run(self):
+        """game-over menu launch function"""
         run = True
         while run:
             self.screen.fill(self.MENU_COLOR)
@@ -354,16 +323,77 @@ class GameOverMenu:
                 if event.type == pygame.QUIT:
                     self.quit_value = True
                     run = False
-            if self.last_save_btn.draw(self.screen):
-                pass
             if self.quit_btn.draw(self.screen):
                 self.quit_value = True
                 run = False
             screen.blit(self.GAME_OVER_MESSAGE, (self.screen_sizes[0] / 2 - 200, 100))
             pygame.display.update()
 
+    # функция возвращающая значение переменной выхода
     def get_quit_value(self):
+        """a function that returns the value of an output variable"""
         return self.quit_value
+
+
+# класс ответственный за отрисовку меню конца игры
+class GameEndMenu:
+    """the class responsible for drawing the game end menu"""
+
+    def __init__(self, screen):
+        """initializer function"""
+        self.screen = screen
+        self.screen_sizes = screen.get_size()
+
+        self.TEXT_COLOR = (255, 255, 255)
+        self.TEXT_FONT = pygame.font.Font(None, 110)
+        self.TEXT = self.TEXT_FONT.render('THE END',
+                                          True, self.TEXT_COLOR)
+
+        self.MENU_COLOR = (50, 50, 50)
+        self.BTN_IMG_PTH = 'graphics/menu_buttons/'
+
+        self.quit_btn_img = pygame.image.load(self.BTN_IMG_PTH +
+                                              'quit_btn.png').convert_alpha()
+
+        self.quit_btn = Button(self.screen_sizes[0] / 2 - 150,
+                               self.screen_sizes[1] / 1.5, self.quit_btn_img, 2)
+
+        self.run()
+
+    # функция запускающая меню конца игры
+    def run(self):
+        """function launching the game end menu"""
+        run = True
+        while run:
+            self.screen.fill(self.MENU_COLOR)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.quit_value = True
+                    run = False
+            if self.quit_btn.draw(self.screen):
+                pygame.quit()
+                return
+            screen.blit(self.TEXT, (self.screen_sizes[0] / 2 - 200, 100))
+            pygame.display.update()
+
+
+# класс ответственный за меню загрузки
+class LoadingMenu:
+    """the class responsible for the loading menu"""
+
+    def __init__(self):
+        """initializer function"""
+        self.LOADING_FONT = pygame.font.Font(None, 100)
+        self.LOADING_TEXT = self.LOADING_FONT.render('LOADING...', True,
+                                                     (255, 255, 255))
+
+    # функция ответственная за запуск меню загрузки
+    def run(self):
+        """function launching the loading menu"""
+        screen.fill(SCREEN_COLOR)
+        screen.blit(self.LOADING_TEXT, (screen.get_width() // 2 - 150,
+                                        screen.get_height() // 2 - 100))
+        pygame.display.flip()
 
 
 # Основа пока что
@@ -384,7 +414,7 @@ class Player(pygame.sprite.Sprite):
 
         self.attack_time = 0
 
-        self.speed = 4
+        self.speed = 6
 
         self.smackthat = True
 
@@ -491,10 +521,9 @@ class Player(pygame.sprite.Sprite):
 
     def attack(self, weapon):
         current_time = pygame.time.get_ticks()
-        weapons[f'{weapon}'].attack()
         if current_time - self.attack_time >= weapons[f'{weapon}'].attack_delay:
             weapon_attack.append(weapons[f'{weapon}'])
-
+            weapons[f'{weapon}'].attack()
 
     def get_hp_inf(self):
         return self.health
@@ -546,7 +575,6 @@ class Enemy(pygame.sprite.Sprite):
 
     def do_attack(self):
         current_time = pygame.time.get_ticks()
-        print(current_time - self.attack_time)
         if current_time - self.attack_time >= self.attack_cooldown:
             player.health -= self.attack
             return True
@@ -594,8 +622,9 @@ class Enemy(pygame.sprite.Sprite):
 
 
 class Sword(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, player):
         super().__init__(all_sprites, weapon_group)
+        self.player = player
         self.image = pygame.image.load(weapons_images['sword'])
         self.rect = self.image.get_rect().move(TILE_SIZE * x, TILE_SIZE * y)
 
@@ -604,12 +633,12 @@ class Sword(pygame.sprite.Sprite):
 
         botAnim = []
         for anim in SWORD_ATTACK_ANIMATION:
-            botAnim.append((anim, 300))
+            botAnim.append((anim, 100))
         self.boltAnimAttack = pyganim.PygAnimation(botAnim)
         self.boltAnimAttack.play()
 
     def update(self):
-        if pygame.sprite.collide_rect(self, player):
+        if pygame.sprite.collide_rect(self, self.player):
             self.image.set_colorkey((255, 255, 255))
             self.image.fill((255, 255, 255))
 
@@ -634,51 +663,120 @@ class Camera:
         self.dy = -(target.rect.y + target.rect.h // 2 - HEIGHT // 2)
 
 
-def health_bar(health):
-    pygame.draw.rect(screen, (255, 0, 0),
-                     (10, 10, health * 4, 25))
-    pygame.draw.rect(screen, (255, 255, 255),
-                     (10, 10, 400, 25), 4)
+# класс ответственный за хп-бар
+class HP_bar:
+    """class responsible for hp-bar"""
+
+    def __init__(self):
+        """initializer function"""
+        self.TEXT_COLOR = (255, 255, 255)
+        self.TEXT_FONT = pygame.font.Font(None, 35)
+        self.HP_STR = self.TEXT_FONT.render('HP', True,
+                                            self.TEXT_COLOR)
+
+    # функция отрисовки хп-бара
+    def health_bar(self, health):
+        """HP bar drawing function"""
+        pygame.draw.rect(screen, (255, 0, 0),
+                         (40, 10, health * 4, 25))
+        pygame.draw.rect(screen, (255, 255, 255),
+                         (40, 10, 400, 25), 4)
+        screen.blit(self.HP_STR, (5, 10))
 
 
-player = generate_level(load_level('maptiled\level_1_decor.csv'), load_level('maptiled\level_1_creatures.csv'))
+# класс ответственный за уровень
+class Level:
+    """the class responsible for the level"""
 
+    def __init__(self, player):
+        """initializer function"""
+        self.enemies = len(enemy_group)
+        self.player = player
+        self.surface = pygame.display.get_surface()
 
-def main():
-    screen.fill((0, 0, 0))
-    running = True
-    camera = Camera()
-
-    while running:
-        clock.tick(FPS)
+    # функция ответственная за запуск уровня
+    def run(self):
+        """function responsible for starting the level"""
         screen.fill((0, 0, 0))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+        running = True
+        camera = Camera()
+        hp_bar = HP_bar()
 
-            key = pygame.key.get_pressed()
-
-            if key[pygame.K_ESCAPE]:
-                menu = IngameMenu(screen)
-                if menu.get_quit_value():
+        while running:
+            clock.tick(FPS)
+            screen.fill((104, 159, 56))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     running = False
 
-        camera.update(player)
+                key = pygame.key.get_pressed()
 
-        for sprite in all_sprites:
-            camera.apply(sprite)
+                if key[pygame.K_ESCAPE]:
+                    menu = IngameMenu(screen)
+                    if menu.get_quit_value():
+                        running = False
 
-        all_sprites.update()
+            camera.update(self.player)
 
-        all_sprites.draw(screen)
-        tiles_group.draw(screen)
-        enemy_group.draw(screen)
+            for sprite in all_sprites:
+                camera.apply(sprite)
+            for sprite in floor_sprite:
+                camera.apply(sprite)
 
-        player_group.draw(screen)
-        health_bar(player.get_hp_inf())
-        weapon_group.draw(screen)
+            floor_sprite.draw(screen)
+            all_sprites.draw(screen)
 
-        pygame.display.flip()
+            all_sprites.update()
+
+            hp_bar.health_bar(self.player.get_hp_inf())
+
+
+            pygame.display.flip()
+
+        if len(enemy_group) == 0:
+            return 'end'
+        pygame.quit()
+        return 'end'
+
+
+# функция ответственная за запуск уровней
+def main():
+    global player
+    """function responsible for launching levels"""
+    loading = LoadingMenu()
+    loading.run()
+
+    player = generate_level(load_level('maptiled\level_1_decor.csv'),
+                            load_level('maptiled\level_1_creatures.csv'),
+                            '1')
+    level = Level(player)
+
+    if level.run() == 'end':
+        return
+
+    loading.run()
+
+    for sprite in all_sprites:
+        sprite.kill()
+
+    player = generate_level(load_level('maptiled\level_2_decor.csv'),
+                            load_level('maptiled\level_2_creatures.csv'),
+                            '2')
+    level = Level(player)
+    if level.run() == 'end':
+        return
+    loading.run()
+    for sprite in all_sprites:
+        sprite.kill()
+
+    player = generate_level(load_level('maptiled\level_3_decor.csv'),
+                            load_level('maptiled\level_3_creatures.csv'),
+                            '3')
+    level = Level(player)
+    if level.run() == 'end':
+        return
+
+    GameEndMenu(screen)
 
 
 if __name__ == '__main__':
