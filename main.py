@@ -3,11 +3,8 @@ import pyganim as pyganim
 import pytmx
 import csv
 
-pygame.init()
-clock = pygame.time.Clock()
-
 SIZE = WIDTH, HEIGHT = 1024, 658
-FPS = 120
+FPS = 60
 TILE_SIZE = 64
 SCREEN_COLOR = pygame.Color('black')
 
@@ -66,7 +63,7 @@ tile_images = {
     'spawn': ['40'],
     'weapons': ['39'],
     'npc': ['42'],
-    'enemy': ['41'],
+    'enemy': ['41', ['']],
     'grass': ['3'],
     'collision_block': ['4', '5', '6', '7', '8', '9', '10', '11', '12', '16',
                         '17', '18', '19', '20', '21', '22', '23', '24', '25',
@@ -89,7 +86,6 @@ slime = {
     'hp': 10,
     'attack': 1
 }
-
 
 player = None
 
@@ -324,8 +320,9 @@ class GameOverMenu:
                     self.quit_value = True
                     run = False
             if self.quit_btn.draw(self.screen):
-                self.quit_value = True
                 run = False
+                pygame.quit()
+                return
             screen.blit(self.GAME_OVER_MESSAGE, (self.screen_sizes[0] / 2 - 200, 100))
             pygame.display.update()
 
@@ -348,6 +345,17 @@ class GameEndMenu:
         self.TEXT_FONT = pygame.font.Font(None, 110)
         self.TEXT = self.TEXT_FONT.render('THE END',
                                           True, self.TEXT_COLOR)
+
+        with open('data\\res.csv', 'r') as csvf:
+            reader = csv.reader(csvf, delimiter=';')
+            result = [i for i in reader]
+        self.TEXT_RES = None
+
+        for i in result:
+            if i[0] == 'END':
+                print('yes')
+                self.TEXT_RES = self.TEXT_FONT.render(i[1],
+                                                      True, self.TEXT_COLOR)
 
         self.MENU_COLOR = (50, 50, 50)
         self.BTN_IMG_PTH = 'graphics/menu_buttons/'
@@ -374,6 +382,7 @@ class GameEndMenu:
                 pygame.quit()
                 return
             screen.blit(self.TEXT, (self.screen_sizes[0] / 2 - 200, 100))
+            screen.blit(self.TEXT_RES, (self.screen_sizes[0] / 2 - 200, 250))
             pygame.display.update()
 
 
@@ -628,7 +637,7 @@ class Sword(pygame.sprite.Sprite):
         self.image = pygame.image.load(weapons_images['sword'])
         self.rect = self.image.get_rect().move(TILE_SIZE * x, TILE_SIZE * y)
 
-        self.damage = 5
+        self.damage = 100
         self.attack_delay = 400
 
         botAnim = []
@@ -724,17 +733,21 @@ class Level:
                 camera.apply(sprite)
 
             floor_sprite.draw(screen)
-            all_sprites.draw(screen)
+            collision_tiles_group.draw(screen)
+            player_group.draw(screen)
+            enemy_group.draw(screen)
+            weapon_group.draw(screen)
+            # all_sprites.draw(screen)
 
             all_sprites.update()
 
             hp_bar.health_bar(self.player.get_hp_inf())
-
-
+            if self.player.get_hp_inf() <= 0:
+                GameOverMenu(screen)
             pygame.display.flip()
 
-        if len(enemy_group) == 0:
-            return 'end'
+            if len(enemy_group) == 0:
+                return 1
         pygame.quit()
         return 'end'
 
@@ -742,22 +755,29 @@ class Level:
 # функция ответственная за запуск уровней
 def main():
     global player
-    """function responsible for launching levels"""
+
     loading = LoadingMenu()
     loading.run()
-
     player = generate_level(load_level('maptiled\level_1_decor.csv'),
                             load_level('maptiled\level_1_creatures.csv'),
                             '1')
     level = Level(player)
-
     if level.run() == 'end':
         return
-
     loading.run()
+
+    with open('data\\res.csv', 'w', encoding="utf8", newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=';',
+                            quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(['2 level', '5 mobs kill'])
 
     for sprite in all_sprites:
         sprite.kill()
+    for sprite in floor_sprite:
+        sprite.kill()
+
+    del player
+    del level
 
     player = generate_level(load_level('maptiled\level_2_decor.csv'),
                             load_level('maptiled\level_2_creatures.csv'),
@@ -765,21 +785,31 @@ def main():
     level = Level(player)
     if level.run() == 'end':
         return
+
     loading.run()
+
+    with open('res.csv', 'w') as csvfile:
+        writer = csv.writer(csvfile, delimiter=';')
+        writer.writerow(['1 level', '6 mobs kill'])
+
     for sprite in all_sprites:
         sprite.kill()
+    for sprite in floor_sprite:
+        sprite.kill()
 
-    player = generate_level(load_level('maptiled\level_3_decor.csv'),
-                            load_level('maptiled\level_3_creatures.csv'),
-                            '3')
-    level = Level(player)
-    if level.run() == 'end':
-        return
+    del player
+    del level
+
+    with open('data\\res.csv', 'w', encoding="utf8", newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=';')
+        writer.writerow(['END', '12 mobs kill'])
 
     GameEndMenu(screen)
 
 
 if __name__ == '__main__':
+    pygame.init()
+    clock = pygame.time.Clock()
     menu = Menu(screen)
     if menu.get_quit_value():
         pygame.quit()

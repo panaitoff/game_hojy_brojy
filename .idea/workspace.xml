@@ -3,16 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="4cc485d4-ef25-4844-975f-eda0e8a55892" name="Changes" comment="ver 1.2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graphics/enemy/monster.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/maptiled/game_world.tiled-session" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/game_world.tiled-session" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_1_creatures.csv" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_1_creatures.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_1_decor.csv" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_1_decor.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_2_creatures.csv" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_2_creatures.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_2..tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_2.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_2.tmx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/maptiled/level_2_decor.csv" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_2_decor.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_3_creatures.csv" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_3_creatures.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_3_decor.csv" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_3_decor.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_3..tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_3.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_3_creatures.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_3_decor.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +32,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/main_new.py" />
+    <property name="settings.editor.selected.configurable" value="preferences.pathVariables" />
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -149,8 +149,18 @@
       <option name="project" value="LOCAL" />
       <updated>1673713542906</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="ver 1.2">
+      <created>1673806715915</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1673806715915</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
