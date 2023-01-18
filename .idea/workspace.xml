@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="32b267dd-ce6b-46af-8c56-9e3e23bb3fdf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/game_world.tiled-session" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/game_world.tiled-session" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/ground.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level.tmx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_1.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_1.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_3.tmx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_3_creatures.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/maptiled/level_3_decor.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/project.pptx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-    </list>
+    <list default="true" id="32b267dd-ce6b-46af-8c56-9e3e23bb3fdf" name="Changes" comment="ver 1.9" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,6 +54,14 @@
       <option name="presentableId" value="Default" />
       <updated>1674047121574</updated>
     </task>
+    <task id="LOCAL-00001" summary="ver 1.9">
+      <created>1674062776593</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674062776593</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -77,5 +74,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ver 1.9" />
+    <option name="LAST_COMMIT_MESSAGE" value="ver 1.9" />
   </component>
 </project>
