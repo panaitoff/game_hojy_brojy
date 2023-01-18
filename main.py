@@ -2,6 +2,7 @@ import pygame
 import pyganim as pyganim
 import pytmx
 import csv
+from random import choice
 
 SIZE = WIDTH, HEIGHT = 1024, 658
 FPS = 60
@@ -84,7 +85,7 @@ player_image = pygame.image.load('graphics/player/player_down.png')  # Изоб�
 slime = {
     'image': enemy_images['slime'],
     'hp': 10,
-    'attack': 1
+    'attack': 2
 }
 
 player = None
@@ -112,7 +113,7 @@ def generate_level(level_decor, level_creatures, level):
                 weapons['sword'] = Sword(x, y, new_player)
             elif level_creatures[y][x] in tile_images['enemy']:
                 Enemy(x, y, slime)
-    Floor()
+    Floor(level)
     return new_player
 
 
@@ -141,9 +142,9 @@ class Brick(pygame.sprite.Sprite):
 
 
 class Floor(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, num):
         super().__init__(floor_sprite)
-        self.image = pygame.image.load('maptiled\ground.png')
+        self.image = pygame.image.load(f'maptiled\ground_{num}.png')
         self.rect = self.image.get_rect().move(0, 0)
 
 
@@ -180,9 +181,8 @@ class Button:
 class Menu:
     """the class responsible for drawing the start menu"""
 
-    def __init__(self, screen):
+    def __init__(self):
         """initializer function"""
-        self.screen = screen
         self.screen_sizes = screen.get_size()
 
         self.TEXT_COLOR = (255, 255, 255)
@@ -211,17 +211,17 @@ class Menu:
         """start menu launch function"""
         run = True
         while run:
-            self.screen.fill(self.MENU_COLOR)
+            screen.fill(self.MENU_COLOR)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit_value = True
                     run = False
-            if self.play_btn.draw(self.screen):
+            if self.play_btn.draw(screen):
                 break
-            if self.quit_btn.draw(self.screen):
+            if self.quit_btn.draw(screen):
                 self.quit_value = True
                 run = False
-            self.screen.blit(player_image, self.player_img_rect)
+            screen.blit(player_image, self.player_img_rect)
 
             pygame.display.update()
 
@@ -235,9 +235,8 @@ class Menu:
 class IngameMenu:
     """the class responsible for drawing the in-game menu"""
 
-    def __init__(self, screen):
+    def __init__(self):
         """initializer function"""
-        self.screen = screen
         self.screen_sizes = screen.get_size()
 
         self.TEXT_COLOR = (255, 255, 255)
@@ -265,14 +264,14 @@ class IngameMenu:
         """in-game menu launch function"""
         run = True
         while run:
-            self.screen.fill(self.MENU_COLOR)
+            screen.fill(self.MENU_COLOR)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit_value = True
                     run = False
-            if self.cont_btn.draw(self.screen):
+            if self.cont_btn.draw(screen):
                 break
-            if self.quit_btn.draw(self.screen):
+            if self.quit_btn.draw(screen):
                 self.quit_value = True
                 run = False
 
@@ -288,9 +287,8 @@ class IngameMenu:
 class GameOverMenu:
     """class responsible for game over menu"""
 
-    def __init__(self, screen):
+    def __init__(self):
         """initializer function"""
-        self.screen = screen
         self.screen_sizes = screen.get_size()
 
         self.TEXT_COLOR = (255, 255, 255)
@@ -314,12 +312,12 @@ class GameOverMenu:
         """game-over menu launch function"""
         run = True
         while run:
-            self.screen.fill(self.MENU_COLOR)
+            screen.fill(self.MENU_COLOR)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit_value = True
                     run = False
-            if self.quit_btn.draw(self.screen):
+            if self.quit_btn.draw(screen):
                 run = False
                 pygame.quit()
                 return
@@ -336,9 +334,8 @@ class GameOverMenu:
 class GameEndMenu:
     """the class responsible for drawing the game end menu"""
 
-    def __init__(self, screen):
+    def __init__(self):
         """initializer function"""
-        self.screen = screen
         self.screen_sizes = screen.get_size()
 
         self.TEXT_COLOR = (255, 255, 255)
@@ -350,6 +347,7 @@ class GameEndMenu:
             reader = csv.reader(csvf, delimiter=';')
             result = [i for i in reader]
         self.TEXT_RES = None
+        result[0][1] = f'SCORE: {12 * 100 * choice([1, 2, 3, 8])}'
 
         for i in result:
             if i[0] == 'END':
@@ -373,12 +371,12 @@ class GameEndMenu:
         """function launching the game end menu"""
         run = True
         while run:
-            self.screen.fill(self.MENU_COLOR)
+            screen.fill(self.MENU_COLOR)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit_value = True
                     run = False
-            if self.quit_btn.draw(self.screen):
+            if self.quit_btn.draw(screen):
                 pygame.quit()
                 return
             screen.blit(self.TEXT, (self.screen_sizes[0] / 2 - 200, 100))
@@ -637,7 +635,7 @@ class Sword(pygame.sprite.Sprite):
         self.image = pygame.image.load(weapons_images['sword'])
         self.rect = self.image.get_rect().move(TILE_SIZE * x, TILE_SIZE * y)
 
-        self.damage = 100
+        self.damage = 5
         self.attack_delay = 400
 
         botAnim = []
@@ -721,7 +719,7 @@ class Level:
                 key = pygame.key.get_pressed()
 
                 if key[pygame.K_ESCAPE]:
-                    menu = IngameMenu(screen)
+                    menu = IngameMenu()
                     if menu.get_quit_value():
                         running = False
 
@@ -743,7 +741,8 @@ class Level:
 
             hp_bar.health_bar(self.player.get_hp_inf())
             if self.player.get_hp_inf() <= 0:
-                GameOverMenu(screen)
+                GameOverMenu()
+                break
             pygame.display.flip()
 
             if len(enemy_group) == 0:
@@ -769,7 +768,7 @@ def main():
     with open('data\\res.csv', 'w', encoding="utf8", newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=';',
                             quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(['2 level', '5 mobs kill'])
+        writer.writerow(['1 level', '5 mobs kill'])
 
     for sprite in all_sprites:
         sprite.kill()
@@ -788,9 +787,9 @@ def main():
 
     loading.run()
 
-    with open('res.csv', 'w') as csvfile:
+    with open('data\\res.csv', 'w+') as csvfile:
         writer = csv.writer(csvfile, delimiter=';')
-        writer.writerow(['1 level', '6 mobs kill'])
+        writer.writerow(['2 level', '6 mobs kill'])
 
     for sprite in all_sprites:
         sprite.kill()
@@ -804,13 +803,13 @@ def main():
         writer = csv.writer(csvfile, delimiter=';')
         writer.writerow(['END', '12 mobs kill'])
 
-    GameEndMenu(screen)
+    GameEndMenu()
 
 
 if __name__ == '__main__':
     pygame.init()
     clock = pygame.time.Clock()
-    menu = Menu(screen)
+    menu = Menu()
     if menu.get_quit_value():
         pygame.quit()
     else:

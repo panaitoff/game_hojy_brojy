@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4cc485d4-ef25-4844-975f-eda0e8a55892" name="Changes" comment="ver 1.5" />
+    <list default="true" id="4cc485d4-ef25-4844-975f-eda0e8a55892" name="Changes" comment="ver 1.5">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/res.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/res.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/game_world.tiled-session" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/game_world.tiled-session" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_2.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_2.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_2_creatures.csv" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_2_creatures.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maptiled/level_2_decor.csv" beforeDir="false" afterPath="$PROJECT_DIR$/maptiled/level_2_decor.csv" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -155,7 +163,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673818215753</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="ver 1.5">
+      <created>1673818516134</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1673818516134</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="UnknownFeatures">
