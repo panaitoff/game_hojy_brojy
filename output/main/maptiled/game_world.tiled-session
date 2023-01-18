@@ -1,0 +1,136 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level_2.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "C:/Users/yurii/OneDrive/Документы/Док-ты Юрия Панаитова/programmirovanie/pygame_project/maptiled/tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "all.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "brick.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "grass.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "level.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1332,
+                "y": 1760
+            }
+        },
+        "level_1.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1916,
+                "y": 3326
+            }
+        },
+        "level_2..tmx": {
+            "scale": 0.16271033653846154,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1665.5364727608494,
+                "y": 61.45891043397978
+            }
+        },
+        "level_2.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1916,
+                "y": 1697
+            }
+        },
+        "level_3..tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 920,
+                "y": 1238
+            }
+        },
+        "level_3.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 883.3333333333333,
+                "y": 795.4545454545454
+            }
+        },
+        "map.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1026,
+                "y": 1024
+            }
+        },
+        "map.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tiels_for_map.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tiles.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "tiles_map.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/yurii/OneDrive/Документы/Док-ты Юрия Панаитова/pygame_project/maptiled",
+    "last.externalTilesetPath": "C:/Users/yurii/OneDrive/Документы/Док-ты Юрия Панаитова/programmirovanie/pythonProject/maptiled",
+    "last.imagePath": "C:/Users/yurii/OneDrive/Документы/Док-ты Юрия Панаитова/pygame_project/maptiled",
+    "map.fixedSize": true,
+    "map.height": 32,
+    "map.lastUsedExportFilter": "Все файлы (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": null,
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 32,
+    "openFiles": [
+        "level_2.tmx",
+        "level_1.tmx"
+    ],
+    "project": "game_world.tiled-project",
+    "recentFiles": [
+        "level_1.tmx",
+        "level_2.tmx",
+        "level_3.tmx",
+        "tiles.tsx",
+        "level.tmx",
+        "level_3..tmx",
+        "level_2..tmx",
+        "map.tmx",
+        "tiles_map.tsx",
+        "all.tsx",
+        "tiels_for_map.tsx",
+        "grass.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    }
+}
